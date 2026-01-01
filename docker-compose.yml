@@ -1,0 +1,25 @@
+#共通設定 バックエンドではdocker-compose.ymlとdocker-compose.override.ymlは読み込まれる
+version: "3.9"
+
+services:
+  java-api:
+    build: .
+    depends_on:
+      - java-api-db
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://java-api-db:5432/mydb
+      SPRING_DATASOURCE_USERNAME: user
+      SPRING_DATASOURCE_PASSWORD: password
+
+  java-api-db:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: mydb
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
+
