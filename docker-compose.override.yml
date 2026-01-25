@@ -12,8 +12,10 @@ services:
       "
 
     volumes:
-      - ./src:/app/src
-
+      #16行目のコードではホットロード効かない
+      # - ./src:/app/src
+      #以下のコードに変えたらホットロード聞いた
+      - .:/app
     environment:
       SPRING_PROFILES_ACTIVE: test
       SPRING_APPLICATION_NAME: growth_record_java
