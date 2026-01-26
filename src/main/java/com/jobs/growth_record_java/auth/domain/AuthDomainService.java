@@ -1,5 +1,7 @@
 package com.jobs.growth_record_java.auth.domain;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.regex.Pattern;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -21,28 +23,44 @@ public class AuthDomainService {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
     }
-    public void register(String email, String password, String name){
-    
-    // メール必須チェック
-    if (email == null || email.isEmpty() ){
-        throw new IllegalArgumentException(ErrorMessage.EMAIL_REQUIRED.getMessage());
+    public void register(String email, String password, String name) {
+
+    Map<String, String> errors = new HashMap<>();
+
+    // 名前チェック
+        if (name == null || name.isEmpty()) {
+        errors.put("name",ErrorMessage.NAME_REQUIRED.getMessage());
     }
-    // メール重複チェック
-    if (userRepository.existsByEmail(email)) {
-        throw new IllegalArgumentException(ErrorMessage.EMAIL_ALREADY_EXISTS.getMessage());
+    // メール必須
+    if (email == null || email.isEmpty()) {
+        errors.put("email",ErrorMessage.EMAIL_REQUIRED.getMessage());
     }
-    // バリデーション処理
-    String emailRegex = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
-    if (!Pattern.matches(emailRegex, email)) {
-        throw new IllegalArgumentException(ErrorMessage.EMAIL_INVALID.getMessage());
+
+    // メール形式
+    if (email != null && !email.isEmpty()) {
+        String emailRegex ="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
+        if (!Pattern.matches(emailRegex, email)) {
+            errors.put("email",ErrorMessage.EMAIL_INVALID.getMessage());
+        }
     }
-    if(password == null || password.isEmpty()){
-        throw new IllegalArgumentException(ErrorMessage.PASSWORD_REQUIRED.getMessage());
+
+    // メール重複
+    if (email != null && userRepository.existsByEmail(email)) {
+        errors.put("email",ErrorMessage.EMAIL_ALREADY_EXISTS.getMessage());
     }
-    // パスワードのハッシュ化
+
+    // パスワード必須
+    if (password == null || password.isEmpty()) {
+        errors.put("password",ErrorMessage.PASSWORD_REQUIRED.getMessage());
+    }
+
+    if (!errors.isEmpty()) {
+        throw new ValidationException(errors);
+    }
+
     String hashPassword = passwordEncoder.encode(password);
-    // ここでインスタンス化して状態保持をEntityのprotected User で保持してる
-    User user = new User(email,name,hashPassword);
-    // ここでリポジトリそうに投げてる
+    User user = new User(email, name, hashPassword);
     userRepository.save(user);
-}}
+}
+
+}
