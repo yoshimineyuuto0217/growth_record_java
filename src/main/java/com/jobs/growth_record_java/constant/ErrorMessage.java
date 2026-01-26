@@ -4,7 +4,7 @@ public enum ErrorMessage {
     // 認証関係
     EMAIL_REQUIRED("メールは必須です"),
     EMAIL_INVALID("無効なメールアドレスです"),
-    EMAIL_ALREADY_EXISTS("すでに登録されています"),
+    EMAIL_ALREADY_EXISTS("すでに登録されているメールアドレスです"),
     PASSWORD_REQUIRED("パスワードは必須です");
 
     private final String message;
