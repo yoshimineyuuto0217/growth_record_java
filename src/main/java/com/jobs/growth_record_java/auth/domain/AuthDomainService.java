@@ -1,6 +1,5 @@
 package com.jobs.growth_record_java.auth.domain;
 
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -8,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.jobs.growth_record_java.auth.repository.UserRepository;
+import com.jobs.growth_record_java.constant.ErrorMessage;
 
 @Service
 @Transactional
@@ -17,7 +17,7 @@ public class AuthDomainService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public AuthDomainService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public AuthDomainService(UserRepository userRepository, PasswordEncoder passwordEncoder ) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
     }
@@ -25,16 +25,19 @@ public class AuthDomainService {
     
     // メール必須チェック
     if (email == null || email.isEmpty() ){
-        throw new IllegalArgumentException("メールは必須です");
+        throw new IllegalArgumentException(ErrorMessage.EMAIL_REQUIRED.getMessage());
     }
     // メール重複チェック
     if (userRepository.existsByEmail(email)) {
-        throw new IllegalArgumentException("すでに登録されています");
+        throw new IllegalArgumentException(ErrorMessage.EMAIL_ALREADY_EXISTS.getMessage());
     }
     // バリデーション処理
     String emailRegex = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
     if (!Pattern.matches(emailRegex, email)) {
-        throw new IllegalArgumentException("無効なメールアドレスです");
+        throw new IllegalArgumentException(ErrorMessage.EMAIL_INVALID.getMessage());
+    }
+    if(password == null || password.isEmpty()){
+        throw new IllegalArgumentException(ErrorMessage.PASSWORD_REQUIRED.getMessage());
     }
     // パスワードのハッシュ化
     String hashPassword = passwordEncoder.encode(password);
