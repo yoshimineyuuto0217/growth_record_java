@@ -1,5 +1,7 @@
 package com.jobs.growth_record_java.auth.repository;
 
+import java.util.Optional;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -12,4 +14,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
     // 注意点は名前の付け方
     // 動詞 + By + 条件で命名することが大事
     boolean existsByEmail(String email);
+
+    // ユーザー検索
+    Optional<User> findByEmail(String email);
 }
