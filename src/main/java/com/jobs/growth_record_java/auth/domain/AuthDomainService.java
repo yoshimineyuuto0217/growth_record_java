@@ -23,6 +23,8 @@ public class AuthDomainService {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
     }
+
+    // 新規登録
     public void register(String email, String password, String name) {
 
     Map<String, String> errors = new HashMap<>();
@@ -61,6 +63,39 @@ public class AuthDomainService {
     String hashPassword = passwordEncoder.encode(password);
     User user = new User(email, name, hashPassword);
     userRepository.save(user);
+}
+    
+public void login(String email, String password) {
+
+    Map<String, String> errors = new HashMap<>();
+
+    // メール必須
+    if (email == null || email.isBlank()) {
+        errors.put("email", ErrorMessage.EMAIL_REQUIRED.getMessage());
+    }
+
+    // パスワード必須
+    if (password == null || password.isBlank()) {
+        errors.put("password", ErrorMessage.PASSWORD_REQUIRED.getMessage());
+    }
+
+    // 必須エラーがあれば即終了
+    if (!errors.isEmpty()) {
+        throw new ValidationException(errors);
+    }
+
+    // ユーザー取得
+    User user = userRepository.findByEmail(email)
+        .orElseThrow(() -> new ValidationException(
+            Map.of("email", ErrorMessage.EMAIL_NOT_FOUND.getMessage())
+        ));
+
+    // パスワード照合
+    if (!passwordEncoder.matches(password, user.getPassword())) {
+        throw new ValidationException(
+            Map.of("password", ErrorMessage.PASSWORD_INVALID.getMessage())
+        );
+    }
 }
 
 }
