@@ -5,7 +5,8 @@ import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.jobs.growth_record_java.auth.domain.User;
+import com.jobs.growth_record_java.auth.domain.model.User;
+
 
 @Repository
 // JpaRepositoryはsave・updateなどを使用できるDI

@@ -1,4 +1,4 @@
-package com.jobs.growth_record_java.auth.domain;
+package com.jobs.growth_record_java.auth.domain.model;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
