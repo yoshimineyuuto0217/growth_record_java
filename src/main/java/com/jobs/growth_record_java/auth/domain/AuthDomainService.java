@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.jobs.growth_record_java.auth.domain.model.User;
 import com.jobs.growth_record_java.auth.repository.UserRepository;
+import com.jobs.growth_record_java.auth.service.JwtService;
 import com.jobs.growth_record_java.constant.ErrorMessage;
 
 @Service
@@ -19,14 +20,16 @@ public class AuthDomainService {
     // リポジトリ層の呼び出して渡せるように
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final JwtService jwtService;
 
-    public AuthDomainService(UserRepository userRepository, PasswordEncoder passwordEncoder ) {
+    public AuthDomainService(UserRepository userRepository, PasswordEncoder passwordEncoder, JwtService jwtService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.jwtService = jwtService;
     }
 
     // 新規登録
-    public void register(String email, String password, String name) {
+    public String register(String email, String password, String name) {
 
     Map<String, String> errors = new HashMap<>();
 
@@ -64,9 +67,14 @@ public class AuthDomainService {
     String hashPassword = passwordEncoder.encode(password);
     User user = new User(email, name, hashPassword);
     userRepository.save(user);
+    // token 発行（JWTなど）
+    String token = jwtService.generateToken(user);
+
+    return token;
 }
     
-public void login(String email, String password) {
+    // ログイン処理
+    public String login(String email, String password) {
 
     Map<String, String> errors = new HashMap<>();
 
@@ -97,6 +105,10 @@ public void login(String email, String password) {
             Map.of("password", ErrorMessage.PASSWORD_INVALID.getMessage())
         );
     }
-}
+    // token 発行（JWTなど）
+    String token = jwtService.generateToken(user);
 
+    return token;
+
+}
 }
