@@ -22,14 +22,14 @@ public class AuthApplicationService {
     }
     // 新規登録処理
     public RegisterResponse register(RegisterRequest request){
-        authDomainService.register(request.getEmail(),request.getPassword(),request.getName());
+        String token = authDomainService.register(request.getEmail(), request.getPassword(), request.getName());
         // レスポンスの型は文字列のmessageをしてしたからこれで良い
-        return new RegisterResponse("登録成功");
+        return new RegisterResponse("登録成功",token);
     }
 
     // ログイン処理
     public LoginResponse login(LoginRequest request){
-        authDomainService.login(request.getEmail(),request.getPassword());
-        return new LoginResponse("ログイン成功");
+        String token = authDomainService.login(request.getEmail(),request.getPassword());
+        return new LoginResponse("ログイン成功",token);
     }
 }
