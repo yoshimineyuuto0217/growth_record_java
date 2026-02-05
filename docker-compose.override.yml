@@ -19,6 +19,7 @@ services:
     environment:
       SPRING_PROFILES_ACTIVE: test
       SPRING_APPLICATION_NAME: growth_record_java
+      JWT_SECRET: ${JWT_SECRET}
       JAVA_TOOL_OPTIONS: >
         -Dspring.jpa.show-sql=true
         -Dlogging.level.root=DEBUG
