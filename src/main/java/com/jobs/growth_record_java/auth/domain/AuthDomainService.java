@@ -8,7 +8,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.jobs.growth_record_java.auth.domain.model.User;
 import com.jobs.growth_record_java.auth.repository.UserRepository;
+import com.jobs.growth_record_java.auth.service.JwtService;
 import com.jobs.growth_record_java.constant.ErrorMessage;
 
 @Service
@@ -18,12 +20,16 @@ public class AuthDomainService {
     // リポジトリ層の呼び出して渡せるように
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final JwtService jwtService;
 
-    public AuthDomainService(UserRepository userRepository, PasswordEncoder passwordEncoder ) {
+    public AuthDomainService(UserRepository userRepository, PasswordEncoder passwordEncoder, JwtService jwtService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.jwtService = jwtService;
     }
-    public void register(String email, String password, String name) {
+
+    // 新規登録
+    public String register(String email, String password, String name) {
 
     Map<String, String> errors = new HashMap<>();
 
@@ -61,6 +67,48 @@ public class AuthDomainService {
     String hashPassword = passwordEncoder.encode(password);
     User user = new User(email, name, hashPassword);
     userRepository.save(user);
-}
+    // token 発行（JWTなど）
+    String token = jwtService.generateToken(user);
 
+    return token;
+}
+    
+    // ログイン処理
+    public String login(String email, String password) {
+
+    Map<String, String> errors = new HashMap<>();
+
+    // メール必須
+    if (email == null || email.isBlank()) {
+        errors.put("email", ErrorMessage.EMAIL_REQUIRED.getMessage());
+    }
+
+    // パスワード必須
+    if (password == null || password.isBlank()) {
+        errors.put("password", ErrorMessage.PASSWORD_REQUIRED.getMessage());
+    }
+
+    // 必須エラーがあれば即終了
+    if (!errors.isEmpty()) {
+        throw new ValidationException(errors);
+    }
+
+    // ユーザー取得
+    User user = userRepository.findByEmail(email)
+        .orElseThrow(() -> new ValidationException(
+            Map.of("email", ErrorMessage.EMAIL_NOT_FOUND.getMessage())
+        ));
+
+    // パスワード照合
+    if (!passwordEncoder.matches(password, user.getPassword())) {
+        throw new ValidationException(
+            Map.of("password", ErrorMessage.PASSWORD_INVALID.getMessage())
+        );
+    }
+    // token 発行（JWTなど）
+    String token = jwtService.generateToken(user);
+
+    return token;
+
+}
 }

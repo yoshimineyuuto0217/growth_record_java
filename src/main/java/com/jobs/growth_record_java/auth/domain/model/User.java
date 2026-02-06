@@ -1,6 +1,4 @@
-package com.jobs.growth_record_java.auth.domain;
-
-import org.springframework.security.crypto.password.PasswordEncoder;
+package com.jobs.growth_record_java.auth.domain.model;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -32,5 +30,12 @@ public class User {
         this.email = email;
         this.password = hashPassword;
         this.name = name;
+    }
+    // パスワード照合用に必要
+    public String getPassword() {
+    return password;
+}
+    public String getEmail() {
+        return email;
     }
 }
