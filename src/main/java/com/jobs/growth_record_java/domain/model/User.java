@@ -1,4 +1,4 @@
-package com.jobs.growth_record_java.auth.domain.model;
+package com.jobs.growth_record_java.domain.model;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -20,6 +20,8 @@ public class User {
     private String email;
     private String password;
     private String name;
+    private String profile_image;
+    private String self_introduction;
 
     // protectedは他のパッケージでは呼び出せない
     protected User() {
@@ -37,5 +39,18 @@ public class User {
 }
     public String getEmail() {
         return email;
+    }
+    public String name() {
+        return name;
+    }
+    public String profile_image() {
+        return profile_image;
+    }
+    public String self_introduction() {
+        return self_introduction;
+    }
+
+    public Long getId() {
+        return id;
     }
 }
