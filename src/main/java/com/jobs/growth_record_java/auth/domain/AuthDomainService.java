@@ -8,21 +8,21 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.jobs.growth_record_java.auth.domain.model.User;
-import com.jobs.growth_record_java.auth.repository.UserRepository;
-import com.jobs.growth_record_java.auth.service.JwtService;
+import com.jobs.growth_record_java.auth.repository.AuthRepository;
 import com.jobs.growth_record_java.constant.ErrorMessage;
+import com.jobs.growth_record_java.domain.model.User;
+import com.jobs.growth_record_java.security.service.JwtService;
 
 @Service
 @Transactional
 public class AuthDomainService {
 
     // リポジトリ層の呼び出して渡せるように
-    private final UserRepository userRepository;
+    private final AuthRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
 
-    public AuthDomainService(UserRepository userRepository, PasswordEncoder passwordEncoder, JwtService jwtService) {
+    public AuthDomainService(AuthRepository userRepository, PasswordEncoder passwordEncoder, JwtService jwtService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.jwtService = jwtService;
