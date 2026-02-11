@@ -12,5 +12,6 @@ import com.jobs.growth_record_java.domain.model.User;
 // JpaRepositoryはsave・updateなどを使用できるDI
 public interface MyProfileRepository extends JpaRepository<User, Long> {
 // ユーザー検索
-    Optional<User> findByEmail(String email);
+Optional<User> findByEmail(String email);
+
 }
