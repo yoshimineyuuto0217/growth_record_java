@@ -1,12 +1,5 @@
 package com.jobs.growth_record_java.user.controller;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-
 import org.springframework.core.io.Resource;
-import org.springframework.core.io.UrlResource;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -51,31 +44,9 @@ public class MyProfileController {
         // 保存処理を書く
         return myProfileApplicationService.postProfileImage(file);
     }
-    // ユーザーの画像取得用
+    // ユーザーの画像再取得用
     @GetMapping("/images/{fileName}")
     public ResponseEntity<Resource> getImage(@PathVariable String fileName) {
-    
-        Path path = Paths.get("upload/images/").resolve(fileName);
-    
-        if (!Files.exists(path)) {
-            return ResponseEntity.notFound().build();
-        }
-    
-        try {
-            Resource resource = new UrlResource(path.toUri());
-    
-            String contentType = Files.probeContentType(path);
-            if (contentType == null) {
-                contentType = "application/octet-stream";
-            }
-    
-            return ResponseEntity.ok()
-                    .contentType(MediaType.parseMediaType(contentType))
-                    .body(resource);
-    
-        } catch (IOException e) {
-            return ResponseEntity.internalServerError().build();
-        }
-}
-
+        return myProfileApplicationService.getImage(fileName);
+    }
 }
