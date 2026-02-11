@@ -6,7 +6,12 @@ public enum ErrorMessage {
     EMAIL_REQUIRED("メールは必須です"),
     EMAIL_INVALID("無効なメールアドレスです"),
     EMAIL_ALREADY_EXISTS("すでに登録されているメールアドレスです"),
-    PASSWORD_REQUIRED("パスワードは必須です");
+    EMAIL_NOT_FOUND("メールアドレスが存在しません"),
+    PASSWORD_REQUIRED("パスワードは必須です"),
+    PASSWORD_INVALID("パスワードが合致しません"),
+
+    // ユーザー情報関係
+    USER_UNDEFINED("ユーザーが存在しません");
 
     private final String message;
 

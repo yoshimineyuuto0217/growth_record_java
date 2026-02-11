@@ -7,8 +7,10 @@ public class RegisterRequest {
     private String password;
     private String name;
 
+    //コントローラー側でnewする為に必要なものになる
     public RegisterRequest() {} // ★追加（重要）
 
+    // 引数なくてもemailを返せる理由は最初からemailをクラスに保持してるから!!
     public String getEmail() {
         return email;
     }
