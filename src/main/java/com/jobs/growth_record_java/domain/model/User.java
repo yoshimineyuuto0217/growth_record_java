@@ -1,5 +1,6 @@
 package com.jobs.growth_record_java.domain.model;
 
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -40,17 +41,34 @@ public class User {
     public String getEmail() {
         return email;
     }
-    public String name() {
+    public String getName() {
         return name;
     }
-    public String profile_image() {
+    public String getProfile_image() {
         return profile_image;
     }
-    public String self_introduction() {
+    public String getSelf_introduction() {
         return self_introduction;
     }
 
     public Long getId() {
         return id;
+    }
+
+    // ユーザー情報の更新
+    public void updateProfile(
+        String name,
+        String profileImage,
+        String selfIntroduction
+    ) {
+        if (name != null) {
+            this.name = name;
+        }
+        if (profileImage != null) {
+            this.profile_image = profileImage;
+        }
+        if (selfIntroduction != null) {
+            this.self_introduction = selfIntroduction;
+        }
     }
 }
