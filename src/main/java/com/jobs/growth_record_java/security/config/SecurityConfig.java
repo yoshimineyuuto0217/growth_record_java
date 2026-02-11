@@ -33,11 +33,13 @@ public class SecurityConfig {
 
             // 認可設定
             .authorizeHttpRequests(auth -> auth
+                .requestMatchers("/images/**").permitAll()
                 .requestMatchers(
                     "/login",
                     "/register"
                 ).permitAll()
                 .requestMatchers("/me").authenticated()
+                .requestMatchers("/profile").authenticated()
                 .anyRequest().permitAll()
             )
 
