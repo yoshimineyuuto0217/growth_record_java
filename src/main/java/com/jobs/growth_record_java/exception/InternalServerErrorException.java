@@ -1,0 +1,7 @@
+package com.jobs.growth_record_java.exception;
+
+    public class InternalServerErrorException  extends RuntimeException {
+    public InternalServerErrorException(String message) {
+        super(message);
+    }
+}
