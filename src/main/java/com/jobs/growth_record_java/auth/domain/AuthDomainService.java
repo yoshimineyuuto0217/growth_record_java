@@ -15,6 +15,8 @@ import com.jobs.growth_record_java.exception.ValidationException;
 import com.jobs.growth_record_java.security.service.JwtService;
 
 @Service
+// このクラスに対してトランザクション当ててくれる
+// リードオンリー
 @Transactional
 public class AuthDomainService {
 
@@ -60,7 +62,6 @@ public class AuthDomainService {
     return token;
 }
     
-
     // ログイン処理
     public String login(String email, String password) {
 

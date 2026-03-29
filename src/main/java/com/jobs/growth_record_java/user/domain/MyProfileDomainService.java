@@ -90,6 +90,7 @@ public class MyProfileDomainService {
 
         //  DB更新
         user.updateProfile(null, safeFileName, null);
+        //  @Transactionalがあるからダーティチェック走るからいらないかも!! 少し助長かも
         myProfileRepository.save(user);
 
         String imageUrl = "http://host.docker.internal:8080/images/" + safeFileName;
