@@ -6,6 +6,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.jobs.growth_record_java.auth.application.AuthApplicationService;
+import com.jobs.growth_record_java.auth.dto.LoginRequest;
+import com.jobs.growth_record_java.auth.dto.LoginResponse;
 import com.jobs.growth_record_java.auth.dto.RegisterRequest;
 import com.jobs.growth_record_java.auth.dto.RegisterResponse;
 
@@ -22,9 +24,15 @@ public class  AuthController {
     public AuthController(AuthApplicationService authApplicationService){
         this.authApplicationService = authApplicationService;
     }
-    // 新規登録(ここで実際に使う）
+    // 新規登録
     @PostMapping("/register")
     public RegisterResponse register(@RequestBody RegisterRequest request){
         return authApplicationService.register(request);
+    }
+
+    // ログイン
+    @PostMapping("/login")
+    public LoginResponse login(@RequestBody LoginRequest request){
+    return authApplicationService.login(request);
     }
 }

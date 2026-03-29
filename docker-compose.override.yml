@@ -19,6 +19,11 @@ services:
     environment:
       SPRING_PROFILES_ACTIVE: test
       SPRING_APPLICATION_NAME: growth_record_java
+      JWT_SECRET: ${JWT_SECRET}
+      AWS_S3_BUCKET: ${AWS_S3_BUCKET}
+      AWS_S3_REGION: ${AWS_S3_REGION}
+      AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
       JAVA_TOOL_OPTIONS: >
         -Dspring.jpa.show-sql=true
         -Dlogging.level.root=DEBUG
